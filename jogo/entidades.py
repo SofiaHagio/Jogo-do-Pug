@@ -1,5 +1,8 @@
 """Personagens e objetos da fase: o pug, os inimigos, os itens e as partículas."""
 
+import math
+import random
+
 import pygame
 
 from . import config as c
@@ -150,3 +153,115 @@ class Pug:
 
     def visivel(self):
         return not (self.invencivel and (self.invencivel // 4) % 2)
+
+
+# ---------------------------------------------------------------- inimigos
+
+
+class Sombra:
+    """Anda e vira quando encontra parede ou beirada. Morre se o pug pular em cima."""
+
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x + 3, y + T - 24, 30, 24)
+        self.pos_x = float(self.rect.x)
+        self.vx = -1.1
+        self.vivo = True
+        self.tempo_morto = 0
+        self.tempo = random.randint(0, 30)
+
+    def atualizar(self, nivel):
+        self.tempo += 1
+        if not self.vivo:
+            self.tempo_morto += 1
+            return
+        self.pos_x += self.vx
+        self.rect.x = round(self.pos_x)
+        frente = self.rect.right if self.vx > 0 else self.rect.left - 1
+        parede = nivel.solido(frente // T, self.rect.centery // T)
+        sem_chao = not nivel.pisavel(frente // T, (self.rect.bottom + 2) // T)
+        if parede or sem_chao:
+            self.vx *= -1
+
+    @property
+    def sumiu(self):
+        return not self.vivo and self.tempo_morto > 40
+
+
+class Cuspidor:
+    """Fica parado e cospe bolas em arco na direção do pug. Encostar machuca."""
+
+    ALCANCE = 430
+    INTERVALO = 110
+
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x - 2, y + T - 40, 40, 40)
+        self.timer = random.randint(0, self.INTERVALO)
+        self.abrindo = 0
+
+    def atualizar(self, pug, orbes):
+        self.timer += 1
+        if self.abrindo:
+            self.abrindo -= 1
+        dx = pug.rect.centerx - self.rect.centerx
+        if abs(dx) > self.ALCANCE or self.timer < self.INTERVALO:
+            return False
+        self.timer = 0
+        self.abrindo = 16
+        voo = 55  # quadros até chegar perto do pug
+        dy = pug.rect.centery - self.rect.centery
+        vx = max(-6, min(6, dx / voo))
+        vy = max(-9, min(3, (dy - 0.5 * Orbe.GRAVIDADE * voo * voo) / voo))
+        orbes.append(Orbe(self.rect.centerx, self.rect.top + 12, vx, vy))
+        return True
+
+
+class Orbe:
+    GRAVIDADE = 0.15
+
+    def __init__(self, x, y, vx, vy):
+        self.x, self.y, self.vx, self.vy = float(x), float(y), vx, vy
+        self.rect = pygame.Rect(0, 0, 12, 12)
+        self.rect.center = (x, y)
+        self.ativo = True
+
+    def atualizar(self, nivel):
+        self.x += self.vx
+        self.vy += self.GRAVIDADE
+        self.y += self.vy
+        self.rect.center = (round(self.x), round(self.y))
+        if self.y > c.ALTURA + 40 or nivel.solido(int(self.x) // T, int(self.y) // T):
+            self.ativo = False
+
+
+class PlataformaMovel:
+    LARGURA_TILES = 3
+    PERCURSO = 5 * T
+
+    def __init__(self, x, y):
+        self.inicio = x
+        self.rect = pygame.Rect(x, y + 4, T * self.LARGURA_TILES, 16)
+        self.t = 0.0
+        self.dx = 0
+
+    def atualizar(self):
+        self.t += 0.012
+        nova_x = self.inicio + (1 - math.cos(self.t)) / 2 * self.PERCURSO
+        self.dx = round(nova_x) - self.rect.x
+        self.rect.x = round(nova_x)
+
+
+# ---------------------------------------------------------------- itens
+
+
+class Osso:
+    def __init__(self, x, y, dourado=False):
+        self.rect = pygame.Rect(x + 5, y + 11, 26, 14)
+        self.dourado = dourado
+        self.fase = random.random() * math.tau
+        self.coletado = False
+
+
+class Checkpoint:
+    def __init__(self, x, y):
+        self.rect = pygame.Rect(x + 4, y + T - 60, 28, 60)
+        self.ativo = False
