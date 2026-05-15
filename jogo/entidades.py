@@ -265,3 +265,37 @@ class Checkpoint:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x + 4, y + T - 60, 28, 60)
         self.ativo = False
+
+
+# ---------------------------------------------------------------- partículas
+
+
+class Particulas:
+    def __init__(self):
+        self.lista = []
+
+    def emitir(self, x, y, cor, quantidade=8, velocidade=2.5, vida=30, tamanho=3, gravidade=0.1):
+        for _ in range(quantidade):
+            ang = random.uniform(0, math.tau)
+            v = random.uniform(0.3, 1) * velocidade
+            self.lista.append([x, y, math.cos(ang) * v, math.sin(ang) * v - 1, vida, vida, cor, tamanho, gravidade])
+
+    def poeira(self, x, y):
+        for lado in (-1, 1):
+            for _ in range(3):
+                self.lista.append(
+                    [x, y, lado * random.uniform(0.5, 1.8), -random.uniform(0.2, 0.8), 20, 20, (150, 120, 170), 3, 0.02]
+                )
+
+    def atualizar(self):
+        for p in self.lista:
+            p[0] += p[2]
+            p[1] += p[3]
+            p[3] += p[8]
+            p[4] -= 1
+        self.lista = [p for p in self.lista if p[4] > 0]
+
+    def desenhar(self, tela, camera_x):
+        for x, y, _, _, vida, vida_max, cor, tamanho, _ in self.lista:
+            raio = max(1, round(tamanho * vida / vida_max))
+            pygame.draw.circle(tela, cor, (round(x - camera_x), round(y)), raio)
