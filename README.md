@@ -27,7 +27,7 @@ Seu dono está te esperando. Não o decepcione.
 | R | Reiniciar |
 | Q | Sair |
 
-**Objetivo:** colete moedas pelo caminho e chegue até o portal roxo escrito "SAIDA".
+> **Objetivo:** colete moedas pelo caminho e chegue até o portal roxo escrito "SAIDA".
 
 ---
 
@@ -56,8 +56,8 @@ python game.py
 
 ```
 Pygame/
- ┣ jogo.py      ← Código principal do jogo
- ┗ README.md    ← Este arquivo
+ ├── jogo.py      ← Código principal do jogo
+ └── README.md    ← Este arquivo
 ```
 
 ---
