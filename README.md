@@ -48,7 +48,7 @@ python game.py
 ## 🛠️ Tecnologias utilizadas
 
 - **Python 3**
-- **Pygame **
+- **Pygame**
 
 ---
 
