@@ -6,13 +6,13 @@
 
 ## 📖 História
 
-Era uma noite fria e estranha quando um pequeno **Pug** se viu sozinho num mundo assustador.
+Era uma noite fria e estranha quando um pequeno Pug se viu sozinho num mundo assustador.
 
 A lua estava vermelha, montanhas sombrias se espalhavam pelo horizonte e criaturas horríveis rondavam as plataformas. Mas do outro lado desse pesadelo, seu dono o esperava.
 
-O pequeno Pug não sabe como chegou até ali. Só sabe de uma coisa: **precisa voltar para casa.**
+O pequeno Pug não sabe como chegou até ali. Só sabe de uma coisa: precisa voltar para casa.
 
-Desvie dos monstros com espinhos, fuja das bolinhas roxas que o monstro cuspidor lança na sua direção, colete as moedas pelo caminho e chegue até o **portal roxo** que vai te levar de volta ao seu lar.
+Desvie dos monstros com espinhos, fuja das bolinhas roxas que o monstro cuspidor lança na sua direção, colete as moedas pelo caminho e chegue até o portal roxo que vai te levar de volta ao seu lar.
 
 Seu dono está te esperando. Não o decepcione. 
 
@@ -40,15 +40,15 @@ pip install pygame
 
 **2. Execute o jogo:**
 ```
-python game.py
+python jogo.py
 ```
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-- **Python 3**
-- **Pygame**
+- Python 3
+- Pygame
 
 ---
 
@@ -56,8 +56,8 @@ python game.py
 
 ```
 Pygame/
- ├── jogo.py      ← Código principal do jogo
- └── README.md    ← Este arquivo
+ ├── jogo.py ← Código principal do jogo
+ └── README.md ← Este arquivo
 ```
 
 ---
