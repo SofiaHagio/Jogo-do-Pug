@@ -55,7 +55,7 @@ python jogo.py
 ## 📁 Estrutura do projeto
 
 ```
-Pygame/
+Jogo-do-Pug/
  ├── jogo.py ← Código principal do jogo
  └── README.md ← Este arquivo
 ```
